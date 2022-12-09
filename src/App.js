@@ -1,8 +1,9 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 import Header from "./components/Layout/Header";
 import Meals from "./components/Meals/Meals";
 import Cart from "./components/Cart/Cart";
+import CartProvider from "./store/CartProvider";
 
 function App() {
   // In this file I do render the Cart, so that is where I wanna manage the visibility of the Cart - therefore we use useState here
@@ -33,14 +34,20 @@ function App() {
   // Go to Cart.js
   // ~PROP CHAIN~ CLOSE BUTTON
 
+  //~ CONTEXT~
+  // STEP 3: HEllo, I came from Cart.Provider.js!!!
+  // 3.1. Replace wrapper "<Fragment>Here all JSX</Fragment>" to <CartProvider> as a new wrapper component
+  // NEXT: Using The Context! GO TO HeaderCartButton.js!!!
+  //~ CONTEXT~
+
   return (
-    <Fragment>
+    <CartProvider>
       {cartIsShown && <Cart onClose={hideCartHandler} />}
       <Header onShowCart={showCartHandler} />
       <main>
         <Meals />
       </main>
-    </Fragment>
+    </CartProvider>
   );
 }
 
