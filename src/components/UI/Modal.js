@@ -3,8 +3,16 @@ import classes from "./Modal.module.css";
 import ReactDOM from "react-dom"; // used for portals!
 
 // I will create separately backdrop and overlay components
+
+// ~PROP CHAIN~ CLOSE BUTTON {Third Step}
+// HELLO, Im came from Cart.js
+// Work with close when click on backdrop
+// Added: "onClick={props.onClose}" on Backdrop component
+// After look at Modal (JSX), added: "onClose={props.onClose}" in Modal component itself
+// ~PROP CHAIN~ FINISH: passing a value through multiple levels, down to the backdrop
+
 const Backdrop = (props) => {
-  return <div className={classes.backdrop}></div>;
+  return <div className={classes.backdrop} onClick={props.onClose}></div>;
 };
 
 // {props.children} - this will be the actual content passed between the modal opening and closing tags by at a component where the modal is getting used
@@ -26,7 +34,10 @@ const Modal = (props) => {
   // Portals have 2 arguments - second arg is div in index.html
   return (
     <Fragment>
-      {ReactDOM.createPortal(<Backdrop />, portalElement)}
+      {ReactDOM.createPortal(
+        <Backdrop onClose={props.onClose} />,
+        portalElement
+      )}
       {ReactDOM.createPortal(
         <ModalOverlay>{props.children}</ModalOverlay>,
         portalElement
