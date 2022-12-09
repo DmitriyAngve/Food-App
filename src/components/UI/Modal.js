@@ -9,7 +9,7 @@ import ReactDOM from "react-dom"; // used for portals!
 // Work with close when click on backdrop
 // Added: "onClick={props.onClose}" on Backdrop component
 // After look at Modal (JSX), added: "onClose={props.onClose}" in Modal component itself
-// ~PROP CHAIN~ FINISH: passing a value through multiple levels, down to the backdrop
+// ~PROP CHAIN~ RESULT: passing a value through multiple levels, down to the backdrop, NOW GO TO CART
 
 const Backdrop = (props) => {
   return <div className={classes.backdrop} onClick={props.onClose}></div>;

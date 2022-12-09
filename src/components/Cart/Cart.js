@@ -18,8 +18,14 @@ const Cart = (props) => {
   // Work with close button
   // Added: "onClick={props.onClose}" onClose - name from App.js (there points at "hideCartHandler")
   // ~PROP CHAIN~ CLOSE BUTTON {GO to MODAL and male the click on backdrop close modal Cart}
+
+  // ~PROP CHAIN~ CLOSE BUTTON {FOURTH Step}
+  // HELLO, Im came from Modal.js
+  // Add: "onClose={props.onClose}>" on Modal itself
+  // ~PROP CHAIN~ FINISH
+
   return (
-    <Modal>
+    <Modal onClose={props.onClose}>
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
