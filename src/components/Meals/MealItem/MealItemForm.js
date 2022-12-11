@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import Input from "../../UI/Input";
 import classes from "./MealItemForm.module.css";
 
-// ~CART REDUCER ~ USEREF
+// ~CART REDUCER ~> USEREF ~> VALIDATION FORM
 // HELLO, I'm FROM CartProvider.js
 // Here wanna nadle the form submission, then "+ Add" button is clicked and item to the cart because that's what this form is there for ("<form className={classes.form}>")
 // STEP 2:
@@ -25,7 +25,7 @@ import classes from "./MealItemForm.module.css";
 // 2.13 Add below the "button" -> " {!amountIsValid && <p>Please enter a valid amount (1-5)</p>}" - this is state and conditional rendering again
 // 2.14 I wanna execute my context methods to add a cart item, but not in this component. In this component I will call a function which I expect to get on props "onAddToCart(enteredAmountNumber)", cuz the cart item which I wanna add needs more data then just the entered amount. On this MealItemForm.js I only have that amount, I don't have the ID or NAME or a PRICE of that "item", that why I'm not calling the context method here, just calling some other function "onAddToCart" which I expect to get through props to parse the "enteredAmountNumber" and validated to that "onAddToCart" function.
 // 2.15 GO TO MealItem.js!!!
-// ~CART REDUCER ~ USEREF
+// ~CART REDUCER ~> USEREF ~> VALIDATION FORM
 
 const MealItemForm = (props) => {
   const amountInputRef = useRef();
