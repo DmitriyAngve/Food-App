@@ -33,17 +33,24 @@ import classes from "./HeaderCartButton.module.css";
 // 1.9 Let's impement logic: only change if my items changed and if the length is greater than zero (if as least one item in the cart). Add "checkif"
 // 1.10 "Ifcheck" in useEffect() ---> "if (cartCtx.items.length === 0)" if this condition is not met ---> the rest of this effect function doesn't execute (should only execute if I have at least oine item in the cart)
 // 1.11 Now need add the DEPENDENCY. For this I use object destructuring to pull out the items, to get them out of my cart ("const {items} = cartCtx")
-// 1.12 Change useEffect "ifcheck" ---> refer to items, not "cartCtx" directly ("if (items.length === 0)") and pass "items" as a dependency
+// 1.12 Change useEffect "ifcheck" ---> refer to items, not "cartCtx" directly ("if (items.length === 0)") and pass "items" as a dependency (so it's not entire context, but only the items array is a dependency for this effect function)
+// 1.13 Change "numberOfCartItems" cartCtx.items change to items
+// 1.14 Now the bounce only happence one because class is added, but not removed.
+// 1.15 Add removed this class after the animation finished. Do that by setting a timer to useEffect() which fires after 300 milliseconds (that the duration of animation in css). Trigger a function where I set "setBtnIsHighlighted" is back to "false" ---> if that "false" then "btnIsHighlighted ? classes.bump : "" " empty string is added to the classes string instead a "classes.bump"
+// 1.16 Store all (1.15) into variable for case that component should be removed. Need "cleanup" timer or any side effects that might be ongoing cuz I started them in useEffect "return () => {clearTimeout(timer);};"
+
+//
+
 const HeaderCartButton = (props) => {
   const [btnIsHighlighted, setBtnIsHighlighted] = useState(false);
 
   const cartCtx = useContext(CartContext);
 
-  const numberOfCartItems = cartCtx.items.reduce((curNumber, item) => {
+  const { items } = cartCtx;
+
+  const numberOfCartItems = items.reduce((curNumber, item) => {
     return curNumber + item.amount;
   }, 0); // don't forget items lay in CartContext component
-
-  const { items } = cartCtx;
 
   const btnClasses = `${classes.button} ${
     btnIsHighlighted ? classes.bump : ""
@@ -54,6 +61,14 @@ const HeaderCartButton = (props) => {
       return;
     }
     setBtnIsHighlighted(true);
+
+    const timer = setTimeout(() => {
+      setBtnIsHighlighted(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [items]);
 
   return (
