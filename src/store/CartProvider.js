@@ -38,6 +38,13 @@ import CartContext from "./cart-context";
 
 // ~CART REDUCER~
 
+// USEREF ~> VALIDATION FORM ~> useContext again ~> Outputing Cart Items
+// HELLO I'M FROM AvailableMealItem.js
+// STEP 6:
+
+// GO TO CartProvider.js for change logic addind cart items- >>>
+// USEREF ~> VALIDATION FORM ~> useContext again ~> Outputing Cart Items
+
 const defaultCartState = {
   items: [],
   totalAmount: 0,

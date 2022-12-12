@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import classes from "./Cart.module.css";
 import Modal from "../UI/Modal";
+import CartItem from "./CartItem";
 import CartContext from "../../store/cart-context";
 
 const Cart = (props) => {
@@ -11,11 +12,22 @@ const Cart = (props) => {
 
   // helper for cartItems (map all items)
 
+  const cartItemRemoveHandler = (id) => {};
+
+  const cartItemAddHandler = (item) => {};
+
   // "<li>{item.name}</li>" just output a list item
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {cartCtx.items.map((item) => (
-        <li>{item.name}</li>
+        <CartItem
+          key={item.id}
+          name={item.name}
+          amount={item.amount}
+          price={item.price}
+          onRemove={cartItemRemoveHandler.bind(null, item.id)}
+          onAdd={cartItemAddHandler.bind(null, item)}
+        />
       ))}
     </ul>
   );
@@ -42,6 +54,12 @@ const Cart = (props) => {
   // 5.6 Add "totalAmount" variable into JSX Code (into span)
   // 5.7 Create const "hasItems" (to show if there are items in the cart) and simply check if cart context items has a length greater then zero
   // 5.8 Add in JSX code check if "hasItems" is true -> then rendered a button (" {hasItems && <button...")
+  // 5.9 let's make how these cart items are being displayed. Create CarItem.js component and his css and IMPORT in Cart.js and render "cartItem" in JSX
+  // 5.10 "CartItem" component is a List -> add key={items.id} and name={item.name}, amount={item.amount} price={item.price} for DISPLAYING!
+  // 5.11 let's pass functions for Add and Remove Items from the Cart. "cartItemRemoveHandler" by id and "cartItemAddHandler" by item itself
+  // 5.12 Add pn a list in CartItem component: "onRemove" (name from provided component CartItem.js) points "cartItemRemoveHandler" and add the same
+  // 5.13 For all two functions should call "bind" and bind "null" and "item.id" - this ensures that the id of the to be added or removed items is passed here to remove handler. Bind pre-configure as a function for future execution and allows me to pre-configure the argument that function will receive when it's being executed
+  // GO TO CartProvider.js for change logic addind cart items- >>>
   // USEREF ~> VALIDATION FORM ~> useContext again ~> Outputing Cart Items
 
   return (
