@@ -35,6 +35,8 @@ const Cart = (props) => {
   // 3.1 Add new logic to "cartItemRemoveHandler" from CartProvider.js (CartReducer component) --->>>  cartCtx.removeItem(id);
   // ~ADD AND REMOVE ITEMS ON CART~
 
+  // -------------FINAL STEP OF APPLICATION --->>> HeaderCartButton.js
+
   // "<li>{item.name}</li>" just output a list item
   const cartItems = (
     <ul className={classes["cart-items"]}>
