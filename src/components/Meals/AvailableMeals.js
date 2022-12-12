@@ -33,6 +33,7 @@ const DUMMY_MEALS = [
 // HELLO I'M FROM MealItem.js
 // STEP 4:
 // 4.1 Add id={meal.id} - in "<MealItem..." - that should be triggering that context method whenever that form is submitted and that should then add items to the cart
+// NOW GO TO Cart.js
 // USEREF ~> VALIDATION FORM ~> useContext again
 
 const AvailableMeals = () => {
