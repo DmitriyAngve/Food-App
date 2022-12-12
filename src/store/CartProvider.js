@@ -39,11 +39,43 @@ import CartContext from "./cart-context";
 // ~CART REDUCER~
 
 // USEREF ~> VALIDATION FORM ~> useContext again ~> Outputing Cart Items
-// HELLO I'M FROM AvailableMealItem.js
-// STEP 6:
-
-// GO TO CartProvider.js for change logic addind cart items- >>>
+// HELLO I'M FROM Cart.js HERE we change logic for adding cart items
+// STEP 6: Let's for with CartReducer component
+// At the moment items added as new items in that array, let's change it
+// 6.1 Before I derive my "updateItems" I instead wanna check if items is already part of the cart --> Create a existingCartItemIndex constant where I will reach out to my existing items in the cart and call ".findIndex"
+// 6.2 Add callback into ".findIndex" --> it takes a function which should return true if that's the item we're looking for, and false otherwise. compare "item.id" with id the item we're adding with this "action" which was dispatched --> returns Index of item if it exists.
+// 6.3 get the "existingCartItem" by reaching out to state.items and accessing that "existingCartItemIndex"
+// 6.4 Now add an "updatedItem" variable and "updatedItems"
+// 6.5 Add "checkif" "existingCartItem" is a truthy, which will only be the case if it's already part of the array. In this case, the "updatedItem" will be set equal to a nex object where I copy the "...existingCartItem" and update the amount (now need to change). If sushi was already part of the cart and I added to more sushis then, I need to update the amount: " amount: existingCartItem.amount + action.item.amount"
+// 6.6 After this need updatedItems equals to a new array where I copy the existing items (create new array where I copy the old objects "...state.items")
+// 6.7 And then for that "existingCartItemIndex" overwrite this with the "updatedItem"
+// 6.8 Add "elsecase" if thaqt item is added for the first time to that cart items array: "updatedItem" is a brand new item where I copy "...action.item"
+// 6.9 move " const updatedItems = state.items.concat(action.item)" to "elsecheck", delete "...action.item" and delete "let updatedItem"
+// FINISH
+// NOW LET'S IMPELEMENT DELETE AND ADD ITEMS
+// GO TO Cart.js --->>>
 // USEREF ~> VALIDATION FORM ~> useContext again ~> Outputing Cart Items
+
+//
+
+// ~ADD AND REMOVE ITEMS ON CART~
+// HELLO I'M FROM Cart.js
+// STEP 2:
+// 2.1 Need Hadling that action: "dispatchCartAction({ type: "REMOVE", id: id })" from CartProvider.js ----> I should add another "ifcheck" where I check if "action.type" is "REMOVE". "if (action.type === "REMOVE")" - action.type from "removeItemFromCartHandler". Add before return my defaultCartState
+// 2.2 Now I need update the cart (generally update existing cart item) . Get "const existingCartItemIndex = state.items.findIndex()" - same logic as before --> copy logic from "ADD"
+// 2.3 Get to the item itself by then reaching out to "state.items" where I find the Index of "existingCartItemIndex" for that identified index here "[existingCartItemIndex]"
+// 2.3 Now update total amount (add minus logic) "const updatedTotalAmount = state.totalAmount - existingItem.price"
+// 2.4 Now update ITEMS variable and add another "ifcheck" if for the existing item the amount is equal to one (which means it's the last item of that type, which I wanna remove) and else (keep the item in the array, but wanna decrease the amount)
+// 2.4.1 Starts on IF: add "filter" logic for "updatedItems". filter return a new array by applying specific conditions. Conditions: pass a function -> if rreturns true -> keep item in the newly returned array, if return false -> rid of it (based on id which I get on action of "existingCartItemIndex" where "findIndex")
+// 2.4.2 "filter((item) => item.id !== action.id" with this logic I make sure that all items where the id is not equal to the action id are kept, but one item where item id is equal to the "action.id" will be remove (This ogic only in case of amount === 1) --->
+// 2.4.3 ELSE: if amount !== 1 need just update the amount, dont remove from an array. Update item with copy of "existingItem" ("{...existingItem}") in a new object with the spread operator and UPDATE the amount ("existingItem.amount - 1")
+// 2.4.5 Now update items: "updatedItems = [...state.items]" spread for copy old items, but override one of these item for that index which got here where I then override the old item in the array with the updated item which has the updated amount. "updatedItems[existingCartItemIndex] = updatedItem"
+// 2.4.6 After this return new state object where items is "updatedItems" and "totalAmount" is equal "updatedTotalAmount"
+
+// FINISH
+// NOW GO TO Cart.js --->>>>  to wire up this button to CartRemoveHandler component
+
+// ~ADD AND REMOVE ITEMS ON CART~
 
 const defaultCartState = {
   items: [],
@@ -52,9 +84,48 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    const updatedItems = state.items.concat(action.item);
     const updatedTotalAmount =
       state.totalAmount + action.item.price * action.item.amount;
+
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.item.id
+    );
+
+    const existingCartItem = state.items[existingCartItemIndex];
+    let updatedItems;
+
+    if (existingCartItem) {
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount,
+      };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+      updatedItems = state.items.concat(action.item);
+    }
+
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
+
+  if (action.type === "REMOVE") {
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existingItem = state.items[existingCartItemIndex];
+    const updatedTotalAmount = state.totalAmount - existingItem.price;
+    let updatedItems;
+    if (existingItem.amount === 1) {
+      updatedItems = state.items.filter((item) => item.id !== action.id);
+    } else {
+      const updatedItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    }
+
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,

@@ -12,9 +12,28 @@ const Cart = (props) => {
 
   // helper for cartItems (map all items)
 
-  const cartItemRemoveHandler = (id) => {};
+  const cartItemRemoveHandler = (id) => {
+    cartCtx.removeItem(id);
+  };
 
-  const cartItemAddHandler = (item) => {};
+  const cartItemAddHandler = (item) => {
+    cartCtx.addItem({ ...item, amount: 1 });
+  };
+
+  // ~ADD AND REMOVE ITEMS ON CART~
+  // Back to functions "cartItemRemoveHandler" and "cartItemAddHandler"
+  // Add logic to "cartItemAddHandler" which is being triggered when "plus" button for a "CaretItem" is clicked
+  // STEP 1:
+  // 1.1 Add to "cartItemAddHandler" "cartCtx" and call "addItem" with "cartCtx.addItem({ ...item, amount: 1 })" logic for adding +1. It is related to the function from CartProvider.js ("addItemToCartHandler")
+  // 1.2 Need Hadling that action: "dispatchCartAction({ type: "REMOVE", id: id })" from CartProvider.js ---->
+  // GO TO CartProvider.js to "CartReducer" -->>>
+  // ~ADD AND REMOVE ITEMS ON CART~
+
+  // ~ADD AND REMOVE ITEMS ON CART~
+  // HELLO I'M FROM CartProvider.js
+  // STEP 3:
+  // 3.1 Add new logic to "cartItemRemoveHandler" from CartProvider.js (CartReducer component) --->>>  cartCtx.removeItem(id);
+  // ~ADD AND REMOVE ITEMS ON CART~
 
   // "<li>{item.name}</li>" just output a list item
   const cartItems = (
